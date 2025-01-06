@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Service Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 1rem;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: flex-end;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin: 0 1rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        main {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        form {
+            margin: 1rem auto;
+            max-width: 300px;
+            text-align: left;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        form label {
+            display: block;
+            margin: 0.5rem 0 0.2rem;
+        }
+
+        form input {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        form button {
+            width: 100%;
+            padding: 0.5rem;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#" id="loginMenu">Login</a></li>
+                <li><a href="#" id="registerMenu">Register</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="login" style="display: none;">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <label for="loginEmail">Email:</label>
+                <input type="email" id="loginEmail" name="email" required>
+
+                <label for="loginPassword">Password:</label>
+                <input type="password" id="loginPassword" name="password" required>
+
+                <button type="submit">Login</button>
+            </form>
+        </section>
+
+        <section id="register" style="display: none;">
+            <h2>Register</h2>
+            <form id="registerForm">
+                <label for="registerName">Name:</label>
+                <input type="text" id="registerName" name="name" required>
+
+                <label for="registerEmail">Email:</label>
+                <input type="email" id="registerEmail" name="email" required>
+
+                <label for="registerPassword">Password:</label>
+                <input type="password" id="registerPassword" name="password" required>
+
+                <button type="submit">Register</button>
+            </form>
+        </section>
+
+        <section id="welcome">
+            <h1>Welcome to the Home Service Platform</h1>
+            <p>Your go-to place for finding and offering services with ease.</p>
+        </section>
+    </main>
+
+    <script>
+        const loginMenu = document.getElementById('loginMenu');
+        const registerMenu = document.getElementById('registerMenu');
+        const loginSection = document.getElementById('login');
+        const registerSection = document.getElementById('register');
+        const welcomeSection = document.getElementById('welcome');
+
+        loginMenu.addEventListener('click', () => {
+            loginSection.style.display = 'block';
+            registerSection.style.display = 'none';
+            welcomeSection.style.display = 'none';
+        });
+
+        registerMenu.addEventListener('click', () => {
+            registerSection.style.display = 'block';
+            loginSection.style.display = 'none';
+            welcomeSection.style.display = 'none';
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const response = await axios.post('/api/login', { email, password });
+                alert(response.data.message);
+            } catch (error) {
+                alert('Login failed!');
+            }
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+
+            // Log the data to verify
+            console.log('Registering with:', { name, email, password });
+
+            try {
+                const response = await axios.post('/api/register', { name, email, password });
+                alert(response.data.message);  // Success message
+            } catch (error) {
+                console.error('Registration error:', error);  // Log detailed error info
+                alert('Registration failed!');  // Show generic error message
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>
